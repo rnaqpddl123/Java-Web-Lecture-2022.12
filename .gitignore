@@ -1,6 +1,8 @@
 # rnaqpddl123 adds
 Exercise.java
 mysql.properties
+*.jar
+*.war
 
 .metadata/
 bin/

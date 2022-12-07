@@ -9,4 +9,14 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  <!-- 이방법 잘안씀, Servlet에서 @WebServlet("주소")를 이용해서 주소를 바꾸는 방식을 이용함
+  <servlet>
+  	<servlet-name>first</servlet-name>
+  	<servlet-class>ch05.FirstServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>first</servlet-name>
+  	<url-pattern>/first</url-pattern>
+  </servlet-mapping>
+  -->
 </web-app>

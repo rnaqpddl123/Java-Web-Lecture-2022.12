@@ -3,5 +3,5 @@ routing(경로),method,입력parameter,다음행선지,파일이름
 /ch07/registerCustomer.html,,,,web/ch07/registerCustomer.html		
 /ch07/registerCustomer,POST,	uid name,/jw/ch07/customerList,java/ch07/CustomerInsert.java
 /ch07/deleteCustomer,GET,uid,/jw/ch07/customerList,java/ch07/CustomerDelete.java
-/ch07/updateCustomer	,GET,uid,/jw/ch07/updateCustomer POST
-/ch07/updateCustomer	,PSOT,uid uname,,
+/ch07/updateCustomer	,GET,uid,/jw/ch07/updateCustomer POST,java/ch07/CustomerUpdate.java
+/ch07/updateCustomer	,PSOT,uid uname,,java/ch07/CustomerUpdate.java

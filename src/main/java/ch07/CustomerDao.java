@@ -20,6 +20,7 @@ public class CustomerDao {
 	public static Connection getConnection() {
 		Connection conn;
 		try {
+			//Servers/contex.xml에 Resource에 정보를 입력해놔야함
 			Context initcontext = new InitialContext();
 			DataSource ds = (DataSource) initcontext.lookup("java:comp/env/jdbc/world");
 			conn = ds.getConnection();

@@ -20,7 +20,7 @@ public class Params extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Query String 처리 localhost:8080/jw/ch06/params?uid=hong&cnt=5
-		System.out.println("Params.doPost() method");
+		System.out.println("Params.doGet() method");
 		request.setCharacterEncoding("utf-8");			// 굳이 안해도 인코딩 오류 발생하지 않음
 		
 		String uid = request.getParameter("uid");

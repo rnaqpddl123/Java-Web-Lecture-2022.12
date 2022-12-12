@@ -9,7 +9,15 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
-  <!-- 이방법 잘안씀, Servlet에서 @WebServlet("주소")를 이용해서 주소를 바꾸는 방식을 이용함
+  
+  <!-- ch08.ContextInfo에서 확인가능 -->
+  <context-param>
+  	<param-name>menu</param-name>
+  	<param-value>짬뽕 짜장면 탕수육</param-value>
+  </context-param>
+  
+  
+  <!-- 이방법 잘안씀, Servlet에서 @WebServlet("주소")를 이용해서 주소를 바꾸는 방식을 이용함(내용이 많아지니까 이 방법으로 하면관리가힘듬)
   <servlet>
   	<servlet-name>first</servlet-name>
   	<servlet-class>ch05.FirstServlet</servlet-class>

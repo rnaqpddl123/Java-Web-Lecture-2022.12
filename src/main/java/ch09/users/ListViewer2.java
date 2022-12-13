@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class ListViewer2
  */
+
 @WebServlet("/ch09/users/listView")
 public class ListViewer2 extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,6 +23,7 @@ public class ListViewer2 extends HttpServlet {
 		
 		// 로그인 여부를 알기위해서
 		HttpSession session = request.getSession();
+		String sessionUid = (String)session.getAttribute("uid");
 		
 		List<User> list = (List<User>)request.getAttribute("userList");
 		
@@ -38,7 +40,7 @@ public class ListViewer2 extends HttpServlet {
 				+ "</head>"
 				+ "<body style=\"margin: 40px;\">"
 				+ "    <h1>사용자 목록</h1>";
-		if (session.getAttribute("uid") != null) {	//로그인 되어있는상태 
+		if (sessionUid != null) {	//로그인 되어있는상태 
 			data += "<button onclick=\"location.href='/jw/ch09/users/logout'\">로그아웃</button>";
 			data += session.getAttribute("uname") + "님 환영합니다.";
 		} else {									// 로그인 되어있지 않은 상태
@@ -56,12 +58,27 @@ public class ListViewer2 extends HttpServlet {
 			data += "<td>" + u.getUname() + "</td>";
 			data += "<td>" + u.getEmail() + "</td>";
 			data += "<td>" + u.getRegDate() + "</td>";
+			data += "<td>";
+			
+			// 본인만이 수정 권한이 있음
+			if(sessionUid == null || !sessionUid.equals(u.getUid()))
+				data += "<button onclick=\"location.href='/jw/ch09/users/update?uid="+ u.getUid()+ "'\" disabled>수정</button>";
+			else
+				data += "<button onclick=\"location.href='/jw/ch09/users/update?uid="+ u.getUid()+ "'\">수정</button>";
+			// 관리자(admin)만이 삭제 권한이 있음
+			if(sessionUid == null || !sessionUid.equals("admin"))
+				data += "<button onclick=\"location.href='/jw/ch09/users/delete?uid="+ u.getUid()+ "'\" disabled>삭제</button>";
+			else
+				data += "<button onclick=\"location.href='/jw/ch09/users/delete?uid="+ u.getUid()+ "'\">삭제</button>";
+			data += "</td>";
 		}
 		data += "        </tr>"
 				+ "    </table>"
-				+ "    <br>"
-				+ "    <a href=\"/jw/ch09/users/register.html\">회원 가입</a>"
-				+ "</body>"
+				+ "    <br>";
+		if (sessionUid == null) {		// 로그인 되어있으면 회원 가입창 안뜨게
+			data += "    <a href=\"/jw/ch09/users/register\">회원 가입</a>";
+		}
+		data +="</body>"
 				+ "</html>";
 		out.print(data);
 	}

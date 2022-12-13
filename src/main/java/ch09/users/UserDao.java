@@ -1,9 +1,6 @@
 package ch09.users;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +8,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -21,11 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 
 public class UserDao {
-	private String host;
-	private String user;
-	private String password;
-	private String database; 
-	private String port;
+
 
 	public static Connection getConnection() {
 		Connection conn;
@@ -40,25 +32,10 @@ public class UserDao {
 		}
 		return conn;
 	}
-	UserDao(){
-		try {
-			InputStream is = new FileInputStream("C://workspace/mysql.properties");
-			Properties props = new Properties();
-			props.load(is);
-			is.close();
-			
-			host = props.getProperty("host");
-			user = props.getProperty("user");
-			password = props.getProperty("password");
-			database = props.getProperty("database");
-			port = props.getProperty("port", "3306"); // key값이 없으면 디폴트값 3316을 준다
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	//유저 정보 삭제
-	public void deleteCustomer(String uid) {
+	public void deleteUser(String uid) {
 		Connection conn = getConnection();
 		String sql = "DELETE FROM users WHERE uid=?;";
 		try {
@@ -75,14 +52,14 @@ public class UserDao {
 	// 유저 정보 수정
 	public void updateUser(User u){
 		Connection conn = getConnection();
-		String sql = "UPDATE users SET pwd=?, uname=?, email=?, regDate=? WHERE uid=?;";
+		String sql = "UPDATE users SET pwd=?, uname=?, email=? WHERE uid=?;";
 		try {
-			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, u.getPwd());
+			PreparedStatement pStmt = conn.prepareStatement(sql);		
+			String cryptedPwd = BCrypt.hashpw(u.getPwd(), BCrypt.gensalt());
+			pStmt.setString(1, cryptedPwd);
 			pStmt.setString(2, u.getUname());	//데이터 타입맞춰주기
 			pStmt.setString(3, u.getEmail());
-			pStmt.setString(4, u.getRegDate().toString());
-			pStmt.setString(5, u.getUid());
+			pStmt.setString(4, u.getUid());
 			
 			//Update 실행
 			pStmt.executeUpdate();
@@ -182,7 +159,7 @@ public class UserDao {
 		return list;
 	}
 	
-	// 유저목록 및 내용보여주기
+	// 유저 등록
 	public void registerUser(User u) {
 		Connection conn = getConnection();
 		String sql = "INSERT INTO users VALUES (?, ?, ?, ?, DEFAULT);";

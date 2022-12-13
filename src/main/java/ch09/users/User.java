@@ -10,7 +10,6 @@ public class User {
 	private LocalDate regDate;
 	
 	User() {}
-	
 	User(String uid, String pwd, String uname, String email) {
 		super();
 		this.uid = uid;

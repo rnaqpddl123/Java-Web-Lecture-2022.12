@@ -1,0 +1,35 @@
+routing			method		입력 파라메터		Viewer또는 다음행선지	넘겨줄 파라메터		View파일이름
+'/ch09/users'							'/jw/c09/users'		
+list			GET		x			listView (JSP)		List<User>		java/ch09/users/ListViewer2.java	
+
+login			POST		uid,pwd			list(Servlet)		X(session에저장)		web/ch09/users/login.html
+			POST		x			register.html(HTML)	X		
+			
+logout			GET		x			list(Servlet)		X			java/ch09/users/ListViewer2.java
+
+register			GET		x			register.html(HTML)	x			web/ch09/users/register.html
+			POST		uid,pwd,uname,email	list (Servlet)				
+
+update			GET		x(session이용)		updateView (JSP)		uid,pwd,uname,email   	java/ch09/users/updateView.java
+			POST		uid,uname		list (Servlet)				
+
+delete			GET		uid			list (Servlet)		x			java/ch09/users/ListViewer2.java
+
+
+엑셀용
+routing	method	입력 파라메터	Viewer또는 다음행선지	넘겨줄 파라메터	View파일이름
+/ch09/users'			/jw/c09/users'		
+list	GET	x	listView (JSP)	List<User>	java/ch09/users/ListViewer2.java
+					
+login	POST	uid,pwd	list(Servlet)	X(session에저장)	web/ch09/users/login.html
+	POST	x	register.html(HTML)	X	web/ch09/users/login.html
+					
+logout	GET	x	list(Servlet)	X	java/ch09/users/ListViewer2.java
+					
+register	GET	x	register.html(HTML)	x	web/ch09/users/register.html
+	POST	uid,pwd,uname,email	list (Servlet)	x	web/ch09/users/register.html
+					
+update	GET	x(session이용)	updateView (JSP)	uid,pwd,uname,email	java/ch09/users/updateView.java
+	POST	uid,pwd,uname,email	list (Servlet)	x	
+					
+delete	GET	uid	list (Servlet)	x	java/ch09/users/ListViewer2.java

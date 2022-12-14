@@ -16,6 +16,19 @@
   	<param-value>짬뽕 짜장면 탕수육</param-value>
   </context-param>
   
+  <!-- web.xml에서의 필터처리 ch10에서만 적용되는 방식
+  	EncodingFilter에서 @WebFilter("/ch10/*")대신에 사용한다.
+  	하지만 이방법은 잘안쓰고 그냥 어노테이션(@)이용해서 처리한다.
+  -->
+<!--   <filter>
+  	<filter-name>HangulEncoding</filter-name>
+  	<filter-class>ch10.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>HangulEncoding</filter-name>
+  	<url-pattern>/ch10/*</url-pattern>
+  </filter-mapping> -->
+  
   
   <!-- 이방법 잘안씀, Servlet에서 @WebServlet("주소")를 이용해서 주소를 바꾸는 방식을 이용함(내용이 많아지니까 이 방법으로 하면관리가힘듬)
   <servlet>

@@ -15,6 +15,7 @@ update			GET		x(session이용)		updateView (JSP)		uid,pwd,uname,email   	java/ch
 
 delete			GET		uid			list (Servlet)		x			java/ch09/users/ListViewer2.java
 
+
 엑셀용
 routing	method	입력 파라메터	Viewer또는 다음행선지	넘겨줄 파라메터	View파일이름
 /ch09/users'			/jw/c09/users'		

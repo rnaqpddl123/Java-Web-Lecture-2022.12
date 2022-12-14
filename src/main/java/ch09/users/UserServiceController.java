@@ -60,7 +60,7 @@ public class UserServiceController extends HttpServlet {
 					// alert창에 메세지띄우고 화면이동시키기위해서 필요한경로와 메세지전달
 					request.setAttribute("msg", u.getUname() + "님 환영합니다");
 					request.setAttribute("url", "/jw/ch09/users/list");
-					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg.jsp");
 					rd.forward(request, response);
 					
 					// 직접 alert창 띄우는 방식(이 방법 말고 위에 방식을 사용하자)
@@ -73,14 +73,14 @@ public class UserServiceController extends HttpServlet {
 					// 비밀번호가 틀림, 로그인페이지로 다시이동
 					request.setAttribute("msg", "잘못된 패스워드입니다. 다시 입력하세요");
 					request.setAttribute("url", "/jw/ch09/users/login.html");
-					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg.jsp");
 					rd.forward(request, response);
 				}
 			} else { 			// uid가 없음
 				// 회원 가입 페이지로 안내
 				request.setAttribute("msg", "회원가입페이지로 이동합니다.");
 				request.setAttribute("url", "/jw/ch09/users/register.html");
-				rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+				rd = request.getRequestDispatcher("/ch09/users/alertMsg.jsp");
 				rd.forward(request, response);
 			}
 			break;
@@ -90,7 +90,7 @@ public class UserServiceController extends HttpServlet {
 			
 			request.setAttribute("msg", "로그아웃 되었습니다.");
 			request.setAttribute("url", "/jw/ch09/users/list");
-			rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+			rd = request.getRequestDispatcher("/ch09/users/alertMsg.jsp");
 			rd.forward(request, response);		
 			break;
 		case "register" :
@@ -132,7 +132,7 @@ public class UserServiceController extends HttpServlet {
 					
 					request.setAttribute("msg", u.getUid() + "님 정보가 수정되었습니다.");
 					request.setAttribute("url", "/jw/ch09/users/list");
-					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg.jsp");
 					rd.forward(request, response);
 					
 
@@ -140,7 +140,7 @@ public class UserServiceController extends HttpServlet {
 				else { 									// 비밀번호 틀렸을때
 					request.setAttribute("msg", "패스워드가 일치하지 않습니다. 패스워드를 확인해주세요.");
 					request.setAttribute("url", "/jw/ch09/users/update");
-					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg.jsp");
 					rd.forward(request, response);
 
 				}
@@ -152,7 +152,7 @@ public class UserServiceController extends HttpServlet {
 			
 			request.setAttribute("msg", uid + "님의 데이터가 삭제되었습니다.");
 			request.setAttribute("url", "/jw/ch09/users/list");
-			rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+			rd = request.getRequestDispatcher("/ch09/users/alertMsg.jsp");
 			rd.forward(request, response);
 			break;
 		default :

@@ -88,10 +88,7 @@ public class Controller extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		String uid = null;
-		String pwd = null;
-		String uname = null;
-		String email = null;
+		String uid = null, pwd = null,  uname = null, email = null;
 		
 		switch(action) {
 		case "login":

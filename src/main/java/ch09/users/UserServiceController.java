@@ -33,7 +33,6 @@ public class UserServiceController extends HttpServlet {
 		String action = uri[uri.length -1];
 		UserDao dao = new UserDao();
 		HttpSession session = request.getSession();
-		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
@@ -58,31 +57,41 @@ public class UserServiceController extends HttpServlet {
 					session.setAttribute("uid", u.getUid());
 					session.setAttribute("uname", u.getUname());
 					
-					// Welcome message
-					out.print("<script>");
-					out.print("alert('" + u.getUname() + "님 환영합니다." + "');");
-					out.print("location.href = '" + "/jw/ch09/users/list" + "';");
-					out.print("</script>");
+					// alert창에 메세지띄우고 화면이동시키기위해서 필요한경로와 메세지전달
+					request.setAttribute("msg", u.getUname() + "님 환영합니다");
+					request.setAttribute("url", "/jw/ch09/users/list");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd.forward(request, response);
+					
+					// 직접 alert창 띄우는 방식(이 방법 말고 위에 방식을 사용하자)
+//					out.print("<script>");
+//					out.print("alert('"+ u.getUname() + "님 환영합니다');");
+//					out.print("location.href = '" + "/jw/ch09/users/list" + "';");
+//					out.print("</script>");
 				}
 				else {		
 					// 비밀번호가 틀림, 로그인페이지로 다시이동
-					out.print("<script>");
-					out.print("alert('잘못된 패스워드 입니다. 다시입력하세요. ');");
-					out.print("location.href = '" + "/jw/ch09/users/login.html" + "';");
-					out.print("</script>");
+					request.setAttribute("msg", "잘못된 패스워드입니다. 다시 입력하세요");
+					request.setAttribute("url", "/jw/ch09/users/login.html");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd.forward(request, response);
 				}
 			} else { 			// uid가 없음
 				// 회원 가입 페이지로 안내
-				out.print("<script>");
-				out.print("alert(회원가입페이지로 이동합니다.)");
-				out.print("location.href = '" + "/jw/ch09/users/register.html" + "';");
-				out.print("</script>");
+				request.setAttribute("msg", "회원가입페이지로 이동합니다.");
+				request.setAttribute("url", "/jw/ch09/users/register.html");
+				rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+				rd.forward(request, response);
 			}
 			break;
 		case "logout":
 			// session 정보제거(로그아웃)
 			session.invalidate();
-			response.sendRedirect("/jw/ch09/users/list");
+			
+			request.setAttribute("msg", "로그아웃 되었습니다.");
+			request.setAttribute("url", "/jw/ch09/users/list");
+			rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+			rd.forward(request, response);		
 			break;
 		case "register" :
 			if (request.getMethod().equals("GET")) {
@@ -121,26 +130,30 @@ public class UserServiceController extends HttpServlet {
 				if (BCrypt.checkpw(pwd, u.getPwd())) {	// 비밀번호 일치하는지 확인
 					dao.updateUser(new User(uid,pwd,uname,email));
 					
-					out.print("<script>");
-					out.print("alert('" + u.getUid() + "님 정보가 수정되었습니다." + "');");
-					out.print("location.href = '" + "/jw/ch09/users/list" + "';");
-					out.print("</script>");
+					request.setAttribute("msg", u.getUid() + "님 정보가 수정되었습니다.");
+					request.setAttribute("url", "/jw/ch09/users/list");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd.forward(request, response);
+					
+
 				}
 				else { 									// 비밀번호 틀렸을때
-					out.print("<script>");
-					out.print("alert('패스워드가 일치하지 않습니다. 패스워드를 확인해주세요 ');");
-					out.print("location.href = '" + "/jw/ch09/users/update" + "';");
-					out.print("</script>");
+					request.setAttribute("msg", "패스워드가 일치하지 않습니다. 패스워드를 확인해주세요.");
+					request.setAttribute("url", "/jw/ch09/users/update");
+					rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+					rd.forward(request, response);
+
 				}
 			}
 			break;
 		case "delete" :
 			uid = request.getParameter("uid");
 			dao.deleteUser(uid);
-			out.print("<script>");
-			out.print("alert('id : " + uid + "의 데이터가 삭제되었습니다.');");
-			out.print("location.href = '" + "/jw/ch09/users/list" + "';");
-			out.print("</script>");
+			
+			request.setAttribute("msg", uid + "님의 데이터가 삭제되었습니다.");
+			request.setAttribute("url", "/jw/ch09/users/list");
+			rd = request.getRequestDispatcher("/ch09/users/alertMsg");
+			rd.forward(request, response);
 			break;
 		default :
 			System.out.println("잘못된경로");

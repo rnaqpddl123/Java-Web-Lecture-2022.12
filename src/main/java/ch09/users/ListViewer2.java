@@ -24,6 +24,7 @@ public class ListViewer2 extends HttpServlet {
 		// 로그인 여부를 알기위해서
 		HttpSession session = request.getSession();
 		String sessionUid = (String)session.getAttribute("uid");
+		String sessionUname = (String)session.getAttribute("uname");
 		
 		List<User> list = (List<User>)request.getAttribute("userList");
 		

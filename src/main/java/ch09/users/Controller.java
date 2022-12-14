@@ -33,6 +33,9 @@ public class Controller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String requestUri = request.getRequestURI();
+		String[] uri = requestUri.split("/");
+		String action = uri[uri.length -1];	// case문만들기용
+		
 		UserDao dao = new UserDao();
 		HttpSession session = request.getSession();
 		RequestDispatcher rd = null;
@@ -41,52 +44,59 @@ public class Controller extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		// TODO: if문 case문으로 교체
-		if (requestUri.contains("list")) {
-			List<User> list = dao.listUsers();
-			rd = request.getRequestDispatcher("/ch09/users/listView");
-			request.setAttribute("userList", list);
-			rd.forward(request, response);
-		} 
-		else if (requestUri.contains("logout")) {
-			// session 정보제거(로그아웃)
-			session.invalidate();
-			response.sendRedirect("/jw/ch09/users/list");
-		}  
+		switch(action) {
+			case "list":
+				List<User> list = dao.listUsers();
+				rd = request.getRequestDispatcher("/ch09/users/listView");
+				request.setAttribute("userList", list);
+				rd.forward(request, response);
+				break;
+			case "logout":
+				// session 정보제거(로그아웃)
+				session.invalidate();
+				response.sendRedirect("/jw/ch09/users/list");
+				break;
+			case "register":
+				response.sendRedirect("/jw/ch09/users/register.html");
+				break;
+			case "delete" :
+				String uid = request.getParameter("uid");
+				dao.deleteUser(uid);
+				out.print("<script>");
+				out.print("alert('id : " + uid + "의 데이터가 삭제되었습니다.');");
+				out.print("location.href = '" + "/jw/ch09/users/list" + "';");
+				out.print("</script>");
+				break;
+			case "update":
+				response.sendRedirect("/jw/ch09/users/updateView");
+				break;
 		
-		else if (requestUri.contains("register")) {
-			response.sendRedirect("/jw/ch09/users/register.html");
-		}  
-		
-		else if (requestUri.contains("delete")) {
-			String uid = request.getParameter("uid");
-			dao.deleteUser(uid);
-			out.print("<script>");
-			out.print("alert('id : " + uid + "의 데이터가 삭제되었습니다.');");
-			out.print("location.href = '" + "/jw/ch09/users/list" + "';");
-			out.print("</script>");
-		} 
-		
-		else if (requestUri.contains("update")) {
-			response.sendRedirect("/jw/ch09/users/updateView");
-		}  
-		
-		else {
-			System.out.println("get의 잘못된경로");
+			default:
+				System.out.println("get의 잘못된경로");
+				break;
 		}	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String requestUri = request.getRequestURI();
+		String[] uri = requestUri.split("/");
+		String action = uri[uri.length -1];
 		UserDao dao = new UserDao();
 		HttpSession session = request.getSession();
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		if (requestUri.contains("login")) {
-			String uid = request.getParameter("uid");
-			String pwd = request.getParameter("pwd");
+		String uid = null;
+		String pwd = null;
+		String uname = null;
+		String email = null;
+		
+		switch(action) {
+		case "login":
+			uid = request.getParameter("uid");
+			pwd = request.getParameter("pwd");
 			User u = dao.getUserinfo(uid);
 			if (u.getUid() != null) {	// uid가 존재
 				
@@ -115,14 +125,14 @@ public class Controller extends HttpServlet {
 				out.print("location.href = '" + "/jw/ch09/users/register.html" + "';");
 				out.print("</script>");
 			}
+			break;
+		case "register" :
+			uid = request.getParameter("uid");
+			pwd = request.getParameter("pwd");
+			uname = request.getParameter("uname");
+			email = request.getParameter("email");
 			
-		} else if (requestUri.contains("register")) {
-			String uid = request.getParameter("uid");
-			String pwd = request.getParameter("pwd");
-			String uname = request.getParameter("uname");
-			String email = request.getParameter("email");
-			
-			User u = dao.getUserinfo(uid);
+			u = dao.getUserinfo(uid);
 			if (u.getUid() != null)			// 기존 id가 중복인경우
 				response.sendRedirect("/jw/ch09/users/register");
 			else {											// id가 중복이 아닌경우
@@ -131,15 +141,15 @@ public class Controller extends HttpServlet {
 				
 				//코드 결과처리후(회원가입) 페이지이동
 				response.sendRedirect("/jw/ch09/users/list");
-			}			
+			}	
+			break;
+		case "update" :
+			uid = request.getParameter("uid");
+			pwd = request.getParameter("pwd");
+			uname = request.getParameter("uname");
+			email = request.getParameter("email");
 			
-		} else if (requestUri.contains("update")) {
-			String uid = request.getParameter("uid");
-			String pwd = request.getParameter("pwd");
-			String uname = request.getParameter("uname");
-			String email = request.getParameter("email");
-			
-			User u = dao.getUserinfo(uid);
+			u = dao.getUserinfo(uid);
 			
 			if (BCrypt.checkpw(pwd, u.getPwd())) {	// 비밀번호 일치하는지 확인
 				dao.updateUser(new User(uid,pwd,uname,email));
@@ -155,11 +165,12 @@ public class Controller extends HttpServlet {
 				out.print("location.href = '" + "/jw/ch09/users/update" + "';");
 				out.print("</script>");
 			}
-			
-		
-		} else {
+			break;
+		default :
 			System.out.println("post의 잘못된경로");
+			break;
 		}
+		
 	}
 
 }

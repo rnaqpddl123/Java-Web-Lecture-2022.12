@@ -18,16 +18,16 @@ import org.mindrot.jbcrypt.BCrypt;
 /**
  * Servlet implementation class Controller
  */
-@WebServlet(
-		name = "UserController", 
-		urlPatterns = { 
-				"/ch09/users/list", 
-				"/ch09/users/login", 
-				"/ch09/users/logout",
-				"/ch09/users/register",
-				"/ch09/users/update",
-				"/ch09/users/delete"
-		})
+//@WebServlet(
+//		name = "UserController", 
+//		urlPatterns = { 
+//				"/ch09/users/list", 
+//				"/ch09/users/login", 
+//				"/ch09/users/logout",
+//				"/ch09/users/register",
+//				"/ch09/users/update",
+//				"/ch09/users/delete"
+//		})
 public class Controller extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
